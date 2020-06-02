@@ -7,18 +7,15 @@ class MusicImporter
   end
 
   def files
-    files = Dir["#{@path}/*.mp3"]
     filenames = []
-    files.each do |file|
-      filenames << file.split('/').last
+    Dir["#{@path}/*.mp3"].each do |path|
+      filenames << path.split('/').last
     end
     filenames
   end
 
   def import
-    files.each do |filename|
-      Song.create_from_filename(filename)
-    end
+    files.each { |filename| Song.create_from_filename(filename) }
   end
 
 end

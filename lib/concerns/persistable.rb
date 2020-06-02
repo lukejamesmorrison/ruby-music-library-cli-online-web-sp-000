@@ -16,6 +16,7 @@ module Persistable
   module InstanceMethods
     def save
       self.class.all << self
+      self
     end
   end
 

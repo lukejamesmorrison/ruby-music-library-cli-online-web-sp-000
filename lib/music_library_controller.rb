@@ -4,6 +4,7 @@ class MusicLibraryController
     @path = path
     @importer = MusicImporter.new(path)
     @importer.import
+    # load all songs by default
     @songs = Song.all.sort { |a,b| a.name <=> b.name }
   end
 
@@ -40,9 +41,8 @@ class MusicLibraryController
   end
 
   def list_songs
-    songs_sorted = Song.all.sort! { |a,b| a.name <=> b.name }
-    @songs = songs_sorted
-    songs_sorted.each_with_index do |song, index|
+    @songs = Song.all.sort! { |a,b| a.name <=> b.name }
+    @songs.each_with_index do |song, index|
       puts "#{index+1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
     end
   end
@@ -67,9 +67,8 @@ class MusicLibraryController
     artist = Artist.find_by_name(name)
 
     if artist
-      songs_sorted = artist.songs.sort! { |a,b| a.name <=> b.name }
-      @songs = songs_sorted
-      songs_sorted.each_with_index do |song, index|
+      @songs = artist.songs.sort! { |a,b| a.name <=> b.name }
+      @songs.each_with_index do |song, index|
         puts "#{index+1}. #{song.name} - #{song.genre.name}"
       end
     end
@@ -81,9 +80,8 @@ class MusicLibraryController
     genre = Genre.find_by_name(name)
 
     if genre
-      songs_sorted = genre.songs.sort! { |a,b| a.name <=> b.name }
-      @songs = songs_sorted
-      songs_sorted.each_with_index do |song, index|
+      @songs = genre.songs.sort! { |a,b| a.name <=> b.name }
+      @songs.each_with_index do |song, index|
         puts "#{index+1}. #{song.artist.name} - #{song.name}"
       end
     end
@@ -91,11 +89,10 @@ class MusicLibraryController
 
   def play_song
     puts "Which song number would you like to play?"
-    input = gets.chomp()
-    input_int = input.to_i
+    input = gets.chomp().to_i
 
-    if (input_int.is_a? Integer) && input_int.between?(1, @songs.count+1)
-      index = input_int - 1
+    if input.between?(1, @songs.count+1)
+      index = input - 1
       song = @songs[index]
       if song
         puts "Playing #{song.name} by #{song.artist.name}"
