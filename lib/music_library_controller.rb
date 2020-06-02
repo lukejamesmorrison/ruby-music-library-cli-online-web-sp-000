@@ -95,7 +95,7 @@ class MusicLibraryController
       index = input - 1
       song = @songs[index]
       if song
-        puts "Playing #{song.name} by #{song.artist.name}" if  
+        puts "Playing #{song.name} by #{song.artist.name}" if
       end
     end
 
